@@ -28,20 +28,38 @@ function handleClick(e) {
 }
 
 function getData() {
+  return fetchData()
+    .then((response) => {
+      const json = response.json();
+      if (response.status === 200) {
+        return Promise.resolve(json);
+      } else {
+        return Promise.reject(json.error);
+      }
+    })
+
+}
   /* 
     fetchDataを呼び出し、responseのステータスを元にデータ取得成功か失敗かを判断しましょう。 
     成功ならpropertyDataをPromise.resolveで返します。
     失敗ならエラーメッセージをPromise.rejectで返します。
   */
+
+
+function fetchData() { // データの取得方法と形式だけを設定する
+  const url = `${endpoint}/properties/1` // よく使う
+  fetch(url, {
+    method: "get",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
 }
-
-
-function fetchData() {
-  const url = `${endpoint}/properties/1`
   /* 
     fetchを使ってデータを取得します。
   */
-}
+
 
 {
   const button1 = document.getElementById('button1');
