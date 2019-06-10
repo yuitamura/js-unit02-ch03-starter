@@ -31,13 +31,16 @@ function getData() {
   return fetchData()
     .then((response) => {
       const json = response.json();
-      if (response.status === 200) {
-        return Promise.resolve(json);
+      if (response.status !== 200) {
+        json.then((data) => {
+          return Promise.reject(data.error);
+        })
       } else {
-        return Promise.reject(json.error);
+        json.then((data) => {
+          return Promise.resolve(data);
+        })
       }
     })
-
 }
   /* 
     fetchDataを呼び出し、responseのステータスを元にデータ取得成功か失敗かを判断しましょう。 
