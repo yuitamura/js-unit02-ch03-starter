@@ -31,17 +31,13 @@ function getData() {
   return fetchData()
     .then((response) => {
       const json = response.json();
-      if (response.status !== 200) {
-        json.then((data) => {
-          return Promise.reject(data.error);
-        })
+      if (response.status === 200) {
+        return Promise.resolve(json);
       } else {
-        json.then((data) => {
-          return Promise.resolve(data);
-        })
+        return Promise.reject(json.error);
       }
     })
-}
+ }
   /* 
     fetchDataを呼び出し、responseのステータスを元にデータ取得成功か失敗かを判断しましょう。 
     成功ならpropertyDataをPromise.resolveで返します。
@@ -49,9 +45,9 @@ function getData() {
   */
 
 
-function fetchData() { // データの取得方法と形式だけを設定する
-  const url = `${endpoint}/properties/1` // よく使う
-  fetch(url, {
+function fetchData(id = 1) { // データの取得方法と形式だけを設定する
+  const url = `${endpoint}/properties/${id}` // よく使う
+  return fetch(url, {
     method: "get",
     headers: {
       'Accept': 'application/json',
